@@ -43,15 +43,14 @@ st.markdown("""
 # Main app title
 st.markdown('<h1 class="main-title">🎶 Text to Music Generation with MusicGen 🎶</h1>', unsafe_allow_html=True)
 
-# Cache the model and tokenizer
+# Cache the model and tokenizer to avoid reloading every time
 @st.cache_resource(show_spinner=True)
 def load_model():
     tokenizer = AutoTokenizer.from_pretrained("facebook/musicgen-small")
     model = AutoModelForTextToWaveform.from_pretrained("facebook/musicgen-small")
     return tokenizer, model
 
-# Cache the generation process
-@st.cache_data(show_spinner=True)
+# Music generation function without caching since model/tokenizer are unhashable
 def generate_music(prompt, tokenizer, model):
     # Tokenize the input
     input_ids = tokenizer(prompt, return_tensors="pt").input_ids
@@ -69,7 +68,7 @@ st.markdown('<p class="text-input">Enter a prompt for music generation:</p>', un
 user_input = st.text_area("", height=120, key="text_area_input")
 
 # Generate button with custom CSS styling
-if st.markdown('<button class="btn-generate">Generate Music</button>', unsafe_allow_html=True):
+if st.button("Generate Music"):
     if user_input:
         # Load the model and tokenizer
         with st.spinner("Loading model..."):
