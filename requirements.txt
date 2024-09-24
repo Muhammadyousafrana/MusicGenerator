@@ -1,20 +1,6 @@
-# Specify Python version (optional, based on the platform)
-python_version >= 3.8
-
-# PyTorch version 2.1.0
 torch==2.1.0
-
-# Audiocraft stable release (official)
 audiocraft
-
-# Optional: If you need the bleeding-edge version of audiocraft
-# Uncomment the next line and comment out the above line if you prefer this version
-# git+https://git@github.com/facebookresearch/audiocraft#egg=audiocraft
-
-# Streamlit
 streamlit
-
-# Other essential dependencies
 setuptools
 wheel
 ffmpeg-python
