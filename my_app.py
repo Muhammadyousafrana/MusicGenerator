@@ -63,20 +63,25 @@ def generate_music(prompt, tokenizer, model):
     waveform_np = waveform[0].cpu().numpy()
     return waveform_np
 
-# Input text area for the user to enter a prompt
-st.markdown('<p class="text-input">Enter a prompt for music generation:</p>', unsafe_allow_html=True)
-user_input = st.text_area("", height=120, key="text_area_input")
+# Input text area for the user to enter a prompt (with non-empty label and hidden visibility)
+st.text_area(
+    label="Prompt", 
+    label_visibility="collapsed",  # Hides the label from view while keeping it non-empty for accessibility
+    placeholder="Enter a prompt for music generation...",
+    height=120, 
+    key="text_area_input"
+)
 
 # Generate button with custom CSS styling
 if st.button("Generate Music"):
-    if user_input:
+    if st.session_state.text_area_input:
         # Load the model and tokenizer
         with st.spinner("Loading model..."):
             tokenizer, model = load_model()
 
         # Generate music
         with st.spinner("Generating music..."):
-            waveform_np = generate_music(user_input, tokenizer, model)
+            waveform_np = generate_music(st.session_state.text_area_input, tokenizer, model)
 
         # Save waveform as .wav file
         sf.write("output.wav", waveform_np, 44100)
