@@ -3,6 +3,11 @@ from transformers import AutoTokenizer, AutoModelForTextToWaveform
 import torch
 import soundfile as sf
 import numpy as np
+import warnings
+
+# Suppress specific warnings
+warnings.filterwarnings("ignore", category=FutureWarning, module="torch.nn.utils.weight_norm")
+warnings.filterwarnings("ignore", category=UserWarning, module="transformers.models.encodec")
 
 # Streamlit app title with CSS styling
 st.markdown("""
@@ -47,10 +52,10 @@ st.markdown('<h1 class="main-title">🎶 Text to Music Generation with MusicGen 
 @st.cache_resource(show_spinner=True)
 def load_model():
     tokenizer = AutoTokenizer.from_pretrained("facebook/musicgen-small")
-    model = AutoModelForTextToWaveform.from_pretrained("facebook/musicgen-small")
+    model = AutoModelForTextToWaveform.from_pretrained("facebook/musicgen-small", attn_implementation="eager")
     return tokenizer, model
 
-# Music generation function without caching since model/tokenizer are unhashable
+# Music generation function
 def generate_music(prompt, tokenizer, model):
     # Tokenize the input
     input_ids = tokenizer(prompt, return_tensors="pt").input_ids
