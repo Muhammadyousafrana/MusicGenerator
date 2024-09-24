@@ -9,8 +9,8 @@ st.title("Text to Music Generation with MusicGen")
 
 @st.cache_resource(show_spinner=True)
 def load_model():
-    tokenizer = AutoTokenizer.from_pretrained("facebook/musicgen-stereo-small")
-    model = AutoModelForTextToWaveform.from_pretrained("facebook/musicgen-stereo-small")
+    tokenizer = AutoTokenizer.from_pretrained("facebook/musicgen-small")
+    model = AutoModelForTextToWaveform.from_pretrained("facebook/musicgen-small")
     return tokenizer, model
 
 # Input text area for the user to enter a prompt
