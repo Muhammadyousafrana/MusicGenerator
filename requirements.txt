@@ -1,8 +1,5 @@
-torch
-audiocraft
 streamlit
-setuptools
-wheel
-ffmpeg-python
+transformers
+torch
 soundfile
 numpy
