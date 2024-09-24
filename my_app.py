@@ -4,18 +4,24 @@ import torch
 import soundfile as sf
 import numpy as np
 
-# Load model and tokenizer
-tokenizer = AutoTokenizer.from_pretrained("facebook/musicgen-stereo-small")
-model = AutoModelForTextToWaveform.from_pretrained("facebook/musicgen-stereo-small")
-
 # Streamlit app title
 st.title("Text to Music Generation with MusicGen")
+
+@st.cache_resource(show_spinner=True)
+def load_model():
+    tokenizer = AutoTokenizer.from_pretrained("facebook/musicgen-stereo-small")
+    model = AutoModelForTextToWaveform.from_pretrained("facebook/musicgen-stereo-small")
+    return tokenizer, model
 
 # Input text area for the user to enter a prompt
 user_input = st.text_area("Enter a prompt for music generation:")
 
 if st.button("Generate Music"):
     if user_input:
+        # Load the model when needed
+        with st.spinner("Loading model..."):
+            tokenizer, model = load_model()
+
         # Tokenize the input
         input_ids = tokenizer(user_input, return_tensors="pt").input_ids
 
